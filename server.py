@@ -1,5 +1,6 @@
 from time import time, sleep
 from ujson import dumps
+from encodings import utf_8
 
 import zmq
 
@@ -36,7 +37,7 @@ class Communicator():
 
     def publish_message(self, message):
         self._socket.send_multipart([b"",
-                                     dumps(message).encode("ascii")])
+                                     utf_8.encode(dumps(message))])
 
 
 def main():
