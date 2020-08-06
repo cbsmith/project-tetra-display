@@ -20,7 +20,7 @@ class Calculator():
             calculator.add_pressure_datum(datum[0])
             if len(datum) > 1:
                 calculator.add_flow_rate_datum(datum[1],
-                                               time.time())
+                                               time())
 
     def get_datum(self):
         datum = {}
