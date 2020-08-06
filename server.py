@@ -1,7 +1,5 @@
-import sys
-import time
-import json
-import random
+from time import time, sleep
+from ujson import dumps
 
 import zmq
 
@@ -13,7 +11,7 @@ import constants
 
 class Calculator():
     def __init__(self):
-        self._calculators = (PatientTubingDescriptorCalculator(time.time()),) * constants.NUMBER_OF_PATIENTS
+        self._calculators = (PatientTubingDescriptorCalculator(time()),) * constants.NUMBER_OF_PATIENTS
 
     def add_datum(self, data):
         for i, calculator in enumerate(self._calculators):
@@ -38,7 +36,7 @@ class Communicator():
 
     def publish_message(self, message):
         self._socket.send_multipart([b"",
-                                     json.dumps(message).encode("ascii")])
+                                     dumps(message).encode("ascii")])
 
 
 def main():
@@ -52,7 +50,7 @@ def main():
             calculator.add_datum(sensor_data)
 
             communicator.publish_message(calculator.get_datum())
-            time.sleep(1.0)
+            sleep(1.0)
         except:
             running = False
             raise

@@ -7,3 +7,4 @@ pytz
 docker
 adafruit_blinka
 crcmod
+ujson
