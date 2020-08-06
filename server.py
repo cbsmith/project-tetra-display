@@ -12,24 +12,21 @@ import constants
 
 
 class Calculator():
-
     def __init__(self):
+        self._calculators = (PatientTubingDescriptorCalculator(time.time()),) * constants.NUMBER_OF_PATIENTS
 
-        self._calculators = (
-            tuple(PatientTubingDescriptorCalculator(time.time())
-                  for _ in range(constants.NUMBER_OF_PATIENTS)))
-
-    def add_datum(self, datum):
-        for i in range(len(self._calculators)):
-            self._calculators[i].add_pressure_datum(datum[i][0])
-            if len(datum[i]) > 1:
-                self._calculators[i].add_flow_rate_datum(datum[i][1],
-                                                         time.time())
+    def add_datum(self, data):
+        for i, calculator in enumerate(self._calculators):
+            datum = data[i]
+            calculator.add_pressure_datum(datum[0])
+            if len(datum) > 1:
+                calculator.add_flow_rate_datum(datum[1],
+                                               time.time())
 
     def get_datum(self):
         datum = {}
-        for i in range(len(self._calculators)):
-            datum.update({i: self._calculators[i].descriptors})
+        for i, calculator in enumerate(self._calculators):
+            datum.update({i: calculator.descriptors})
         return datum
 
 
